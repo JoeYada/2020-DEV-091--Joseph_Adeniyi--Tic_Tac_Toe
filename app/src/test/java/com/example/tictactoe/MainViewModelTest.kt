@@ -1,18 +1,13 @@
 package com.example.tictactoe
 
-import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.ViewModelProvider
-import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.ArrayList
 
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
