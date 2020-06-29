@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(MainViewModel().javaClass)
         btn_Start.setOnClickListener(View.OnClickListener {
             btn_Start.text = "Restart"
-            tv_win_lose.text = ""
+            tv_win_lose.text = "Who will win?"
             btn1.text = ""
             btn2.text = ""
             btn3.text = ""
@@ -44,6 +44,33 @@ class MainActivity : AppCompatActivity() {
             btn9.setOnClickListener(buttonListener)
         })
 
+        btn_reset.setOnClickListener( View.OnClickListener {
+            tv_x_wins.text = "X Wins: "
+            tv_o_wins.text = "O Wins: "
+            tv_draws.text = "Draws:"
+            tv_win_lose.text = "Who will win?"
+            btn1.text = ""
+            btn2.text = ""
+            btn3.text = ""
+            btn4.text = ""
+            btn5.text = ""
+            btn6.text = ""
+            btn7.text = ""
+            btn8.text = ""
+            btn9.text = ""
+            btn1.setOnClickListener(buttonListener)
+            btn2.setOnClickListener(buttonListener)
+            btn3.setOnClickListener(buttonListener)
+            btn4.setOnClickListener(buttonListener)
+            btn5.setOnClickListener(buttonListener)
+            btn6.setOnClickListener(buttonListener)
+            btn7.setOnClickListener(buttonListener)
+            btn8.setOnClickListener(buttonListener)
+            btn9.setOnClickListener(buttonListener)
+            p1Wins = 0
+            p2Wins = 0
+            draws = 0
+        })
     }
 
     private val buttonListener = View.OnClickListener { v ->
