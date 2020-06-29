@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: MainViewModel
+    private lateinit var factory: MainViewModelFactory
     private var player : Int = 1
     var p1Wins: Int = 0
     var p2Wins: Int = 0
@@ -16,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        factory = MainViewModelFactory()
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel().javaClass)
         btn_Start.setOnClickListener(View.OnClickListener {
             btn_Start.text = "Restart"
             tv_win_lose.text = ""
@@ -86,39 +91,35 @@ class MainActivity : AppCompatActivity() {
         player ++
 
         if (checkForWin() && player1){
-            player = 1
+            resetTable()
             tv_win_lose.text = "Player 1 Wins!!"
             p1Wins++
             tv_x_wins.text = "O Wins: $p1Wins"
-            btn1.setOnClickListener(null)
-            btn2.setOnClickListener(null)
-            btn3.setOnClickListener(null)
-            btn4.setOnClickListener(null)
-            btn5.setOnClickListener(null)
-            btn6.setOnClickListener(null)
-            btn7.setOnClickListener(null)
-            btn8.setOnClickListener(null)
-            btn9.setOnClickListener(null)
         }else if (checkForWin() && player2){
-            player = 1
+            resetTable()
             tv_win_lose.text = "Player 2 Wins!!"
             p2Wins++
             tv_o_wins.text = "O Wins: $p2Wins"
-            btn1.setOnClickListener(null)
-            btn2.setOnClickListener(null)
-            btn3.setOnClickListener(null)
-            btn4.setOnClickListener(null)
-            btn5.setOnClickListener(null)
-            btn6.setOnClickListener(null)
-            btn7.setOnClickListener(null)
-            btn8.setOnClickListener(null)
-            btn9.setOnClickListener(null)
+
         }else if (player > 9){
             player = 1
             draws++
             tv_win_lose.text = "It's a Draw!"
             tv_draws.text = "Draws: $draws"
         }
+    }
+
+    private fun resetTable(){
+        player = 1
+        btn1.setOnClickListener(null)
+        btn2.setOnClickListener(null)
+        btn3.setOnClickListener(null)
+        btn4.setOnClickListener(null)
+        btn5.setOnClickListener(null)
+        btn6.setOnClickListener(null)
+        btn7.setOnClickListener(null)
+        btn8.setOnClickListener(null)
+        btn9.setOnClickListener(null)
     }
 
     private fun checkForWin(): Boolean{
@@ -132,25 +133,7 @@ class MainActivity : AppCompatActivity() {
         sections[6] = btn7.text.toString()
         sections[7] = btn8.text.toString()
         sections[8] = btn9.text.toString()
-
-        if (sections[0] == sections[1] && sections[0] == sections[2] && sections[0] != ""){
-            return true
-        }else if (sections[3] == sections[4] && sections[3] == sections[5] && sections[3] != ""){
-            return true
-        }else if (sections[6] == sections[7] && sections[6] == sections[8] && sections[6] != ""){
-            return true
-        }else if (sections[0] == sections[3] && sections[0] == sections[6] && sections[0] != ""){
-            return true
-        }else if (sections[1] == sections[4] && sections[1] == sections[7] && sections[1] != ""){
-            return true
-        }else if (sections[2] == sections[5] && sections[2] == sections[8] && sections[2] != ""){
-            return true
-        }else if (sections[0] == sections[4] && sections[0] == sections[8] && sections[0] != ""){
-            return true
-        }else if (sections[2] == sections[4] && sections[2] == sections[6] && sections[2] != ""){
-            return true
-        }
-        return false
+        return viewModel.checkWin(sections)
     }
 
 }
