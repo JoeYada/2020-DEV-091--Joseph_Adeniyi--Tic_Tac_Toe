@@ -16,17 +16,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        btn1.setOnClickListener(buttonListener)
-        btn2.setOnClickListener(buttonListener)
-        btn3.setOnClickListener(buttonListener)
-        btn4.setOnClickListener(buttonListener)
-        btn5.setOnClickListener(buttonListener)
-        btn6.setOnClickListener(buttonListener)
-        btn7.setOnClickListener(buttonListener)
-        btn8.setOnClickListener(buttonListener)
-        btn9.setOnClickListener(buttonListener)
         viewModel = ViewModelProvider(this).get(MainViewModel().javaClass)
         btn_start.setOnClickListener {
+            btn1.setOnClickListener(buttonListener)
+            btn2.setOnClickListener(buttonListener)
+            btn3.setOnClickListener(buttonListener)
+            btn4.setOnClickListener(buttonListener)
+            btn5.setOnClickListener(buttonListener)
+            btn6.setOnClickListener(buttonListener)
+            btn7.setOnClickListener(buttonListener)
+            btn8.setOnClickListener(buttonListener)
+            btn9.setOnClickListener(buttonListener)
             btn_start.text = "Restart"
             resetUi()
         }
