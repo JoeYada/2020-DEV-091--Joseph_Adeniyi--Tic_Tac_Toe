@@ -251,7 +251,6 @@ class MainViewModelTest {
         viewModel.userClick(2,2,fakeButtonId)
 
         assert(viewModel.viewState.value is MainViewModel.ViewState.Draw)
-//        assert((viewModel.viewState.value as MainViewModel.ViewState.Win).winner == null )
 
     }
 }
