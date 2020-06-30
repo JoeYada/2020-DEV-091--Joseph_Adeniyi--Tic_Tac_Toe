@@ -10,44 +10,35 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private var player : Int = 1
-    var p1Wins: Int = 0
-    var p2Wins: Int = 0
-    var draws: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        btn1.setOnClickListener(buttonListener)
+        btn2.setOnClickListener(buttonListener)
+        btn3.setOnClickListener(buttonListener)
+        btn4.setOnClickListener(buttonListener)
+        btn5.setOnClickListener(buttonListener)
+        btn6.setOnClickListener(buttonListener)
+        btn7.setOnClickListener(buttonListener)
+        btn8.setOnClickListener(buttonListener)
+        btn9.setOnClickListener(buttonListener)
         viewModel = ViewModelProvider(this).get(MainViewModel().javaClass)
-        btn_Start.setOnClickListener(View.OnClickListener {
-            btn_Start.text = "Restart"
-            resetBoard()
-            gameStart()
-        })
+        btn_start.setOnClickListener {
+            btn_start.text = "Restart"
+            resetUi()
+        }
 
-        btn_reset.setOnClickListener( View.OnClickListener {
-            tv_x_wins.text = "X Wins: "
-            tv_o_wins.text = "O Wins: "
-            tv_draws.text = "Draws:"
+        btn_reset.setOnClickListener {
             resetBoard()
-            gameStart()
-            p1Wins = 0
-            p2Wins = 0
-            draws = 0
-        })
+        }
     }
 
-    fun resetBoard(){
-        tv_win_lose.text = "Who will win?"
-        btn1.text = ""
-        btn2.text = ""
-        btn3.text = ""
-        btn4.text = ""
-        btn5.text = ""
-        btn6.text = ""
-        btn7.text = ""
-        btn8.text = ""
-        btn9.text = ""
+    private fun resetBoard(){
+        tv_x_wins.text = "X Wins: "
+        tv_o_wins.text = "O Wins: "
+        tv_draws.text = "Draws:"
+        resetUi()
     }
 
     private fun resetUi() {
@@ -86,17 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun gameStart(){
-        btn1.setOnClickListener(buttonListener)
-        btn2.setOnClickListener(buttonListener)
-        btn3.setOnClickListener(buttonListener)
-        btn4.setOnClickListener(buttonListener)
-        btn5.setOnClickListener(buttonListener)
-        btn6.setOnClickListener(buttonListener)
-        btn7.setOnClickListener(buttonListener)
-        btn8.setOnClickListener(buttonListener)
-        btn9.setOnClickListener(buttonListener)
-    }
     private fun setDrawable(view: Button){
         var player1 = false
         var player2 = false
