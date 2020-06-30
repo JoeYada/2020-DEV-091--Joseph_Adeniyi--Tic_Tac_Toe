@@ -1,8 +1,6 @@
 package com.example.tictactoe
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import io.mockk.impl.annotations.MockK
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

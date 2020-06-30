@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -32,6 +34,33 @@ class MainActivity : AppCompatActivity() {
         btn_reset.setOnClickListener {
             resetBoard()
         }
+
+        viewModel.viewState.observe(this, Observer { state ->
+            when (state) {
+                is MainViewModel.ViewState.Draw -> {
+                    tv_win_lose.text = "It's a Draw!"
+                    tv_draws.text = "Draws: ${state.numberOfDraws}"
+                }
+                is MainViewModel.ViewState.Win -> {
+                    if (state.winner == 0) {
+                        tv_win_lose.text = "Player 1 Wins!!"
+                    } else if (state.winner == 1) {
+                        tv_win_lose.text = "Player 2 Wins!!"
+                    }
+                    tv_x_wins.text = "X Wins: ${state.player0Wins}"
+                    tv_o_wins.text = "O Wins: ${state.player1Wins}"
+                }
+                is MainViewModel.ViewState.ChangeText -> {
+                    val button = findViewById<Button>(state.viewId)
+                    button.text = state.text
+                    if (state.text == "O") {
+                        button.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.red))
+                    } else if (state.text == "X") {
+                        button.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.blue))
+                    }
+                }
+            }
+        })
     }
 
     private fun resetBoard(){
@@ -56,6 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.startNewGame()
     }
+
     private val buttonListener = View.OnClickListener { v ->
         when(v.id){
             R.id.btn1 ->
@@ -76,46 +106,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.userClick(2, 1, v.id)
             R.id.btn9 ->
                 viewModel.userClick(2, 2, v.id)
-        }
-    }
-
-    private fun setDrawable(view: Button){
-        var player1 = false
-        var player2 = false
-        if (player % 2 == 0){
-            player2 = true
-            player1 = false
-        }else{
-            player2 = false
-            player1 = true
-        }
-
-        if (player % 2 == 0){
-            view.setTextColor(getColor(R.color.red))
-            view.text = "O"
-        }else{
-            view.setTextColor(getColor(R.color.blue))
-            view.text = "X"
-        }
-        view.setOnClickListener(null)
-        player ++
-
-        if (checkForWin() && player1){
-            resetTable()
-            tv_win_lose.text = "Player 1 Wins!!"
-            p1Wins++
-            tv_x_wins.text = "O Wins: $p1Wins"
-        }else if (checkForWin() && player2){
-            resetTable()
-            tv_win_lose.text = "Player 2 Wins!!"
-            p2Wins++
-            tv_o_wins.text = "O Wins: $p2Wins"
-
-        }else if (player > 9){
-            player = 1
-            draws++
-            tv_win_lose.text = "It's a Draw!"
-            tv_draws.text = "Draws: $draws"
         }
     }
 

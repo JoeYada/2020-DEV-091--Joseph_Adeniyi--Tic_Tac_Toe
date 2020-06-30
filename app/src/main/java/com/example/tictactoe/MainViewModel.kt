@@ -28,12 +28,32 @@ class MainViewModel() : ViewModel() {
     private fun isGameActive() =
         (_viewState.value !is ViewState.Win) && (_viewState.value !is ViewState.Draw)
 
-    fun checkWin(){
-        fun checkWin() {
-            val rowWinner = checkAllRowWin()
-            if (rowWinner != null) {
-                updatePlayerWinCount(rowWinner)
-                _viewState.value = ViewState.Win(rowWinner, player0Wins, player1Wins)
+    fun checkWin() {
+        val rowWinner = checkAllRowWin()
+        if (rowWinner != null) {
+            updatePlayerWinCount(rowWinner)
+            _viewState.value = ViewState.Win(rowWinner, player0Wins, player1Wins)
+        }else {
+            val colWinner = checkAllColumns()
+            if (colWinner != null) {
+                updatePlayerWinCount(colWinner)
+                _viewState.value = ViewState.Win(colWinner, player0Wins, player1Wins)
+            } else {
+                val diagonalWinner = checkDiagonalWinner()
+                if (diagonalWinner != null) {
+                    updatePlayerWinCount(diagonalWinner)
+                    _viewState.value = ViewState.Win(diagonalWinner, player0Wins, player1Wins)
+                } else {
+                    val antiDiagonalWinner = checkAntiDiagonalWinner()
+                    if (antiDiagonalWinner != null) {
+                        updatePlayerWinCount(antiDiagonalWinner)
+                        _viewState.value =
+                            ViewState.Win(antiDiagonalWinner, player0Wins, player1Wins)
+                    } else if (checkedPositions.size == MAX_SIZE) {
+                        draws++
+                        _viewState.value = ViewState.Draw(draws)
+                    }
+                }
             }
         }
     }
@@ -53,6 +73,26 @@ class MainViewModel() : ViewModel() {
             == checkedPositions["${row}_2"]
         ) {
             checkedPositions["${row}_0"]
+        } else {
+            null
+        }
+    }
+
+    private fun checkAllColumns(): Int? {
+        for (i in 0..2) {
+            val singlePlayer = checkColumn(i)
+            if (singlePlayer != null) {
+                return singlePlayer
+            }
+        }
+        return null
+    }
+
+    private fun checkColumn(column: Int): Int? {
+        return if (checkedPositions["0_${column}"] == checkedPositions["1_${column}"] && checkedPositions["1_${column}"]
+            == checkedPositions["2_${column}"]
+        ) {
+            checkedPositions["0_${column}"]
         } else {
             null
         }
