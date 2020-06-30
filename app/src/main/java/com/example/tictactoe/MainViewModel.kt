@@ -16,26 +16,66 @@ class MainViewModel() : ViewModel() {
     val viewState: LiveData<ViewState>
         get() = _viewState
 
-
-    fun checkWin(sections:List<String>):Boolean{
-        if (sections[0] == sections[1] && sections[0] == sections[2] && sections[0] != ""){
-            return true
-        }else if (sections[3] == sections[4] && sections[3] == sections[5] && sections[3] != ""){
-            return true
-        }else if (sections[6] == sections[7] && sections[6] == sections[8] && sections[6] != ""){
-            return true
-        }else if (sections[0] == sections[3] && sections[0] == sections[6] && sections[0] != ""){
-            return true
-        }else if (sections[1] == sections[4] && sections[1] == sections[7] && sections[1] != ""){
-            return true
-        }else if (sections[2] == sections[5] && sections[2] == sections[8] && sections[2] != ""){
-            return true
-        }else if (sections[0] == sections[4] && sections[0] == sections[8] && sections[0] != ""){
-            return true
-        }else if (sections[2] == sections[4] && sections[2] == sections[6] && sections[2] != ""){
-            return true
+    fun userClick(rowChecked: Int, columnChecked: Int, viewId: Int) {
+        if (!checkedPositions.containsKey("${rowChecked}_${columnChecked}") && isGameActive()) {
+            checkedPositions["${rowChecked}_${columnChecked}"] = activePlayer
+            _viewState.value = ViewState.ChangeText(viewId, if (activePlayer == 0) "X" else "O")
+            activePlayer = (activePlayer + 1) % 2
+            checkWin()
         }
-        return false
+    }
+
+    private fun isGameActive() =
+        (_viewState.value !is ViewState.Win) && (_viewState.value !is ViewState.Draw)
+
+    fun checkWin(){
+        fun checkWin() {
+            val rowWinner = checkAllRowWin()
+            if (rowWinner != null) {
+                updatePlayerWinCount(rowWinner)
+                _viewState.value = ViewState.Win(rowWinner, player0Wins, player1Wins)
+            }
+        }
+    }
+
+    private fun checkAllRowWin(): Int? {
+        for (i in 0..2) {
+            val singlePlayer = checkRow(i)
+            if (singlePlayer != null) {
+                return singlePlayer
+            }
+        }
+        return null
+    }
+
+    private fun checkRow(row: Int): Int? {
+        return if (checkedPositions["${row}_0"] == checkedPositions["${row}_1"] && checkedPositions["${row}_1"]
+            == checkedPositions["${row}_2"]
+        ) {
+            checkedPositions["${row}_0"]
+        } else {
+            null
+        }
+    }
+
+    private fun updatePlayerWinCount(winner: Int) {
+        if (winner == 0) {
+            player0Wins++
+        } else if (winner == 1) {
+            player1Wins++
+        }
+    }
+
+    fun resetStats() {
+        player1Wins = 0
+        player0Wins = 0
+        draws = 0
+    }
+
+    fun startNewGame() {
+        checkedPositions = mutableMapOf()
+        activePlayer = 0
+        _viewState.value = null
     }
 
     sealed class ViewState {

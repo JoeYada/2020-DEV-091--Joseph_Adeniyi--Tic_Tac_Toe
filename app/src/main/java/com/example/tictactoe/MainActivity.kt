@@ -56,24 +56,24 @@ class MainActivity : AppCompatActivity() {
     }
     private val buttonListener = View.OnClickListener { v ->
         when(v.id){
-            R.id.btn1->
-                setDrawable(btn1)
-            R.id.btn2->
-                setDrawable(btn2)
-            R.id.btn3->
-                setDrawable(btn3)
-            R.id.btn4->
-                setDrawable(btn4)
-            R.id.btn5->
-                setDrawable(btn5)
-            R.id.btn6->
-                setDrawable(btn6)
-            R.id.btn7->
-                setDrawable(btn7)
-            R.id.btn8->
-                setDrawable(btn8)
-            R.id.btn9->
-                setDrawable(btn9)
+            R.id.btn1 ->
+                viewModel.userClick(0, 0, v.id)
+            R.id.btn2 ->
+                viewModel.userClick(0, 1, v.id)
+            R.id.btn3 ->
+                viewModel.userClick(0, 2, v.id)
+            R.id.btn4 ->
+                viewModel.userClick(1, 0, v.id)
+            R.id.btn5 ->
+                viewModel.userClick(1, 1, v.id)
+            R.id.btn6 ->
+                viewModel.userClick(1, 2, v.id)
+            R.id.btn7 ->
+                viewModel.userClick(2, 0, v.id)
+            R.id.btn8 ->
+                viewModel.userClick(2, 1, v.id)
+            R.id.btn9 ->
+                viewModel.userClick(2, 2, v.id)
         }
     }
 
