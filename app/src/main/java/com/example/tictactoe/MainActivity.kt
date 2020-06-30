@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var factory: MainViewModelFactory
     private var player : Int = 1
     var p1Wins: Int = 0
     var p2Wins: Int = 0
@@ -19,60 +18,51 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        factory = MainViewModelFactory()
-        viewModel = ViewModelProvider(this, factory).get(MainViewModel().javaClass)
+        viewModel = ViewModelProvider(this).get(MainViewModel().javaClass)
         btn_Start.setOnClickListener(View.OnClickListener {
             btn_Start.text = "Restart"
-            tv_win_lose.text = "Who will win?"
-            btn1.text = ""
-            btn2.text = ""
-            btn3.text = ""
-            btn4.text = ""
-            btn5.text = ""
-            btn6.text = ""
-            btn7.text = ""
-            btn8.text = ""
-            btn9.text = ""
-            btn1.setOnClickListener(buttonListener)
-            btn2.setOnClickListener(buttonListener)
-            btn3.setOnClickListener(buttonListener)
-            btn4.setOnClickListener(buttonListener)
-            btn5.setOnClickListener(buttonListener)
-            btn6.setOnClickListener(buttonListener)
-            btn7.setOnClickListener(buttonListener)
-            btn8.setOnClickListener(buttonListener)
-            btn9.setOnClickListener(buttonListener)
+            resetBoard()
+            gameStart()
         })
 
         btn_reset.setOnClickListener( View.OnClickListener {
             tv_x_wins.text = "X Wins: "
             tv_o_wins.text = "O Wins: "
             tv_draws.text = "Draws:"
-            tv_win_lose.text = "Who will win?"
-            btn1.text = ""
-            btn2.text = ""
-            btn3.text = ""
-            btn4.text = ""
-            btn5.text = ""
-            btn6.text = ""
-            btn7.text = ""
-            btn8.text = ""
-            btn9.text = ""
-            btn1.setOnClickListener(buttonListener)
-            btn2.setOnClickListener(buttonListener)
-            btn3.setOnClickListener(buttonListener)
-            btn4.setOnClickListener(buttonListener)
-            btn5.setOnClickListener(buttonListener)
-            btn6.setOnClickListener(buttonListener)
-            btn7.setOnClickListener(buttonListener)
-            btn8.setOnClickListener(buttonListener)
-            btn9.setOnClickListener(buttonListener)
+            resetBoard()
+            gameStart()
             p1Wins = 0
             p2Wins = 0
             draws = 0
         })
     }
 
+    fun resetBoard(){
+        tv_win_lose.text = "Who will win?"
+        btn1.text = ""
+        btn2.text = ""
+        btn3.text = ""
+        btn4.text = ""
+        btn5.text = ""
+        btn6.text = ""
+        btn7.text = ""
+        btn8.text = ""
+        btn9.text = ""
+    }
+
+    private fun resetUi() {
+        tv_win_lose.text = "Who will win?"
+        btn1.text = ""
+        btn2.text = ""
+        btn3.text = ""
+        btn4.text = ""
+        btn5.text = ""
+        btn6.text = ""
+        btn7.text = ""
+        btn8.text = ""
+        btn9.text = ""
+
+    }
     private val buttonListener = View.OnClickListener { v ->
         when(v.id){
             R.id.btn1->
@@ -96,6 +86,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun gameStart(){
+        btn1.setOnClickListener(buttonListener)
+        btn2.setOnClickListener(buttonListener)
+        btn3.setOnClickListener(buttonListener)
+        btn4.setOnClickListener(buttonListener)
+        btn5.setOnClickListener(buttonListener)
+        btn6.setOnClickListener(buttonListener)
+        btn7.setOnClickListener(buttonListener)
+        btn8.setOnClickListener(buttonListener)
+        btn9.setOnClickListener(buttonListener)
+    }
     private fun setDrawable(view: Button){
         var player1 = false
         var player2 = false
@@ -134,33 +135,6 @@ class MainActivity : AppCompatActivity() {
             tv_win_lose.text = "It's a Draw!"
             tv_draws.text = "Draws: $draws"
         }
-    }
-
-    private fun resetTable(){
-        player = 1
-        btn1.setOnClickListener(null)
-        btn2.setOnClickListener(null)
-        btn3.setOnClickListener(null)
-        btn4.setOnClickListener(null)
-        btn5.setOnClickListener(null)
-        btn6.setOnClickListener(null)
-        btn7.setOnClickListener(null)
-        btn8.setOnClickListener(null)
-        btn9.setOnClickListener(null)
-    }
-
-    private fun checkForWin(): Boolean{
-        val sections = List<String>(9){""}.toMutableList()
-        sections[0] = btn1.text.toString()
-        sections[1] = btn2.text.toString()
-        sections[2] = btn3.text.toString()
-        sections[3] = btn4.text.toString()
-        sections[4] = btn5.text.toString()
-        sections[5] = btn6.text.toString()
-        sections[6] = btn7.text.toString()
-        sections[7] = btn8.text.toString()
-        sections[8] = btn9.text.toString()
-        return viewModel.checkWin(sections)
     }
 
 }
