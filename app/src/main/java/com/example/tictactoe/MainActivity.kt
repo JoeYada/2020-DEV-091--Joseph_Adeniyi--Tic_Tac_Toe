@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         tv_o_wins.text = "O Wins: "
         tv_draws.text = "Draws:"
         resetUi()
+        viewModel.resetStats()
     }
 
     private fun resetUi() {
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         btn8.text = ""
         btn9.text = ""
 
+        viewModel.startNewGame()
     }
     private val buttonListener = View.OnClickListener { v ->
         when(v.id){

@@ -58,6 +58,27 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    private fun checkDiagonalWinner(): Int? {
+        return if (checkedPositions["0_0"] == checkedPositions["1_1"] && checkedPositions["1_1"]
+            == checkedPositions["2_2"]
+        ) {
+            checkedPositions["0_0"]
+        } else {
+            null
+        }
+    }
+
+    private fun checkAntiDiagonalWinner(): Int? {
+        return if (checkedPositions["0_2"] == checkedPositions["1_1"] && checkedPositions["1_1"]
+            == checkedPositions["2_0"]
+        ) {
+            checkedPositions["0_2"]
+        } else {
+            null
+        }
+    }
+
+
     private fun updatePlayerWinCount(winner: Int) {
         if (winner == 0) {
             player0Wins++

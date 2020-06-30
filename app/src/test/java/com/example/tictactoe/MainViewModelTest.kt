@@ -16,59 +16,25 @@ class MainViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private lateinit var positions: MutableList<String>
-    @MockK
-    lateinit var activity: MainActivity
-    private lateinit var factory: MainViewModelFactory
-
-    @MockK
     private lateinit var viewModel: MainViewModel
+    private val fakeButtonId = 1
 
-    @MockK
     @Before
     fun setUp(){
-        activity = MainActivity()
-        factory = MainViewModelFactory()
         viewModel = MainViewModel()
-        positions = mutableListOf<String>()
-
-
     }
 
     @Test
-    fun checkIfTopRowAreEqual(){
-        positions.add("X");        positions.add("X");        positions.add("X")
-        positions.add("X");        positions.add("");        positions.add("")
-        positions.add("X");        positions.add("");        positions.add("")
+    fun checkIfPlayer1WinsWithRow1(){
+        viewModel.userClick(0,0,fakeButtonId)
+        viewModel.userClick(1,1,fakeButtonId)
+        viewModel.userClick(0,1,fakeButtonId)
+        viewModel.userClick(1,0,fakeButtonId)
+        viewModel.userClick(0,2,fakeButtonId)
 
-        Assert.assertEquals(true, viewModel.checkWin(positions))
-    }
+        assert(viewModel.viewState.value is MainViewModel.ViewState.Win)
+        assert((viewModel.viewState.value as MainViewModel.ViewState.Win).winner == 0 )
 
-    @Test
-    fun checkIfTopRowAreUnEqual(){
-        positions.add("X");        positions.add("O");        positions.add("X")
-        positions.add("O");        positions.add("");        positions.add("")
-        positions.add("X");        positions.add("");        positions.add("")
-
-        Assert.assertEquals(false, viewModel.checkWin(positions))
-    }
-
-    @Test
-    fun checkIfFirstColumnIsUnEqual(){
-        positions.add("X");        positions.add("O");        positions.add("X")
-        positions.add("O");        positions.add("");        positions.add("")
-        positions.add("X");        positions.add("");        positions.add("")
-
-        Assert.assertEquals(false, viewModel.checkWin(positions))
-    }
-
-    @Test
-    fun checkIfFirstColumnAreEqual(){
-        positions.add("X");        positions.add("X");        positions.add("X")
-        positions.add("X");        positions.add("");        positions.add("")
-        positions.add("X");        positions.add("");        positions.add("")
-
-        Assert.assertEquals(true, viewModel.checkWin(positions))
     }
 
 
